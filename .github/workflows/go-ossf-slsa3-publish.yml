@@ -28,7 +28,19 @@ jobs:
           echo "::set-output name=commit::$GITHUB_SHA"
           echo "::set-output name=version::$(git describe --tags --always --dirty | cut -c2-)"
           echo "::set-output name=tree-state::$(if git diff --quiet; then echo "clean"; else echo "dirty"; fi)"
-
+  printargs:
+    runs-on: ubuntu-latest
+    steps:
+      - id: checkout
+        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # tag=v2.3.4
+        with:
+          fetch-depth: 0
+      - id: printargs
+        run: |
+          echo $OUTPUTS_EV
+        env:
+          OUTPUTS_EV: ${{join(jobs.args.outputs.*, '\n')}}
+          
   # Trusted builder.
   build:
     permissions:
