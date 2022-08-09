@@ -30,6 +30,7 @@ jobs:
           echo "::set-output name=tree-state::$(if git diff --quiet; then echo "clean"; else echo "dirty"; fi)"
   printargs:
     runs-on: ubuntu-latest
+    needs: args
     steps:
       - id: checkout
         uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # tag=v2.3.4
@@ -39,7 +40,7 @@ jobs:
         run: |
           echo $OUTPUTS_EV
         env:
-          OUTPUTS_EV: ${{ jobs.args.outputs.* }}
+          OUTPUTS_EV: ${{needs.args.outputs.version}}
           
   # Trusted builder.
   build:
