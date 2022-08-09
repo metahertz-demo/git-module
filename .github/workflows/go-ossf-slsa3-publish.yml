@@ -39,7 +39,7 @@ jobs:
         run: |
           echo $OUTPUTS_EV
         env:
-          OUTPUTS_EV: ${{join(jobs.args.outputs.*, '\n')}}
+          OUTPUTS_EV: ${{ jobs.args.outputs.* }}
           
   # Trusted builder.
   build:
